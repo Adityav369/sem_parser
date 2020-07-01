@@ -7,34 +7,42 @@ def tokenizeAndFilter(sentence):
     """
     # TODO: make a custom tokenizer so can tokenize imp domain related chunks
     tokenized = nltk.word_tokenize(sentence)
+    for i, token in enumerate(tokenized):
+        if token[-1] == '.':
+            tokenized[i] = token[:len(token)-1]
+        if token == "vector" or token == "Vector":
+            if tokenized[i+1]=="space" or tokenized[i+1]=="Space":
+                tokenized[i] = "Vector Space"
     omitWords = {"The", "there are", "there is", "draw", "make", "construct",
-                 "Construct", "Make", "Draw", "is", "an"}
+                 "Construct", "Make", "Draw", "is", "an", "Given", "given", ","}
+    print(tokenized)
     return [w for w in tokenized if not w in omitWords]
 
 
 def seqLabel(tokenizedSent):
-    func_type = {"Function"}
-    set_type = {"Set"}
+    types = {"Function", "Set", "Vector Space", "Vector"}
     # just have names as set name defines function
-    set_relations = {"Intersection": "BinRelSet"}
-    func_relations = {"Injection": "BinRelFunc",
-                      "Bijection": "BinRelFunc", "Surjection": "BinRelFunc", "Bijection": "BinRelFunc"}
-    directional = {"From", "To"}
+    relations = {"Injection": "BinRelFunc",
+                      "Bijection": "BinRelFunc", "Surjection": "BinRelFunc", "Orthogonal": "BinRelVec", "Intersection": "BinRelSet"}
+    directional = {"From", "To", "In"}
+    named = set()
     label = []
     for i, word in enumerate(tokenizedSent):
+        print(word)
         capitalizedWord = word.capitalize()
-        if capitalizedWord in func_type:
+        if capitalizedWord in types or word in types:
+            # print(capitalizedWord)
             label.append((capitalizedWord, "entityType"))
-        elif capitalizedWord in set_type:
-            label.append((capitalizedWord, "entityType"))
-        elif capitalizedWord in func_relations.keys():
-            label.append(
-                (capitalizedWord, func_relations[capitalizedWord]))
-        elif capitalizedWord in set_relations.keys():
-            label.append(
-                (capitalizedWord, set_relations[capitalizedWord]))
+        elif capitalizedWord in relations.keys():
+            label.append((capitalizedWord, relations[capitalizedWord]))
         elif capitalizedWord in directional:
             label.append((word, capitalizedWord))
         elif len(word) <= 2:
-            label.append((word, "name"))
+            if word not in named:
+                label.append((word,"name"))
+                named.add(word)
+            else:
+                label.append((word, "declaredBefore"))
+
+    print(label)
     return label

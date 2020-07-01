@@ -10,10 +10,17 @@ from printUtil import printFunc
 # Bijection(f)
 # AutoLabel All
 
+# VectorSpace X
+# Vector x1 ∈ X
+# Vector x2 ∈ X
+# Orthogonal(x1, x2)
+# Label x1 $x_1$
+# Label x2 $x_2$
+
 
 def computeVardecls(labeled):
     # assuming name comes after key word, eg. "function f", "function called f", "set A" etc.
-    entities = {"Set", "Function"}
+    entities = {"Set", "Function","Vector space", "Vector"}
     visitedEntity = []
     var_decls = []
     for i, label in enumerate(labeled):

@@ -9,7 +9,6 @@ def lookForVarDeclWithName(ent, filtered):
             if type(i)==VarDecl and i.name==ent[0]:
                 return i
 
-
 def findNextVarDecl(filtered):
     for ent in filtered:
         if type(ent) is VarDecl:

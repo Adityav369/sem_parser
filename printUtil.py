@@ -8,7 +8,7 @@ def printFunc(labeled):
         if i == -1:
             continue
         elif type(i) == VarDecl:
-            print("type", i.type, "name", i.name)
+            print("VarDecl of type:", i.type, "and name:", i.name)
         elif type(i) == Constraint:
             print(i.func)
             printEachVarDecl(i.args)

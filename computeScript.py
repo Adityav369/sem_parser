@@ -1,7 +1,7 @@
 from preprocess import tokenizeAndFilter, seqLabel
 from VarDecl import VarDecl
 from Constraint import Constraint
-from RelationParser import BinRelFunc
+from RelationParser import BinRelFunc, BinRelVec
 from printUtil import printFunc
 
 # Set A, B
@@ -31,6 +31,7 @@ def computeVardecls(labeled):
         elif label[1] == "name":
             # var_decls.append(VarDecl(label[0], visitedEntity[-1]))
             labeled[i] = VarDecl(label[0], visitedEntity[-1])
+    printFunc(labeled)
     return labeled
 
 
@@ -40,6 +41,8 @@ def computeConstraints(filtered):
         if type(ent) is VarDecl:
             if ent.type == "Function":
                 constraints = BinRelFunc(filtered, ent)
+            elif ent.type == "Vector space":
+                constraints = BinRelVec(filtered, ent)
     return constraints
 
 
